@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: observability
+resources:
+  - namespace.yaml
+  - service-account.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - hpa.yaml
+  - pdb.yaml
+  - network-policy.yaml
+  - otel-collector.yaml
+commonLabels:
+  app.kubernetes.io/managed-by: kustomize
+images:
+  - name: sre-observatory
+    newName: sre-observatory
+    newTag: dev
+

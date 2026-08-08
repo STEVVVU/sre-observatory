@@ -1,0 +1,39 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 180
+  resource:
+    attributes:
+      - key: platform
+        value: sre-observatory
+        action: upsert
+  batch:
+    timeout: 5s
+    send_batch_size: 512
+
+exporters:
+  otlp_http/tempo:
+    endpoint: http://tempo:4318
+  debug:
+    verbosity: basic
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, resource, batch]
+      exporters: [otlp_http/tempo, debug]
+
