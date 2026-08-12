@@ -1,0 +1,235 @@
+groups:
+  - name: "sre_observatory.slo.recording"
+    rules:
+      - record: "slo:sre_observatory_availability:bad_ratio_rate1h"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[1h]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[1h])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_availability:bad_ratio_rate5m"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[5m]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[5m])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_availability:bad_ratio_rate6h"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[6h]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[6h])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_availability:bad_ratio_rate30m"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[30m]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[30m])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_availability:bad_ratio_rate1d"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[1d]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[1d])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_availability:bad_ratio_rate2h"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[2h]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[2h])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_availability:bad_ratio_rate3d"
+        expr: |
+          sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics",status_code=~"5.."}[3d]))
+          /
+          clamp_min(sum(rate(http_server_requests_total{route!~"/healthz|/readyz|/metrics"}[3d])), 1e-9)
+        labels:
+          service: "sre-observatory"
+          slo: "availability"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate1h"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[1h]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[1h])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate5m"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[5m]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[5m])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate6h"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[6h]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[6h])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate30m"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[30m]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[30m])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate1d"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[1d]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[1d])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate2h"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[2h]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[2h])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+      - record: "slo:sre_observatory_latency:bad_ratio_rate3d"
+        expr: |
+          1 - (
+            sum(rate(http_server_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics",le="0.3"}[3d]))
+            /
+            clamp_min(sum(rate(http_server_request_duration_seconds_count{route!~"/healthz|/readyz|/metrics"}[3d])), 1e-9)
+          )
+        labels:
+          service: "sre-observatory"
+          slo: "latency"
+  - name: "sre_observatory.slo.alerts"
+    rules:
+      - alert: "SLOBurnRate_sre_observatory_availability_1h_5m"
+        expr: |
+          (slo:sre_observatory_availability:bad_ratio_rate1h > 0.0144)
+          and
+          (slo:sre_observatory_availability:bad_ratio_rate5m > 0.0144)
+        for: "2m"
+        labels:
+          severity: "page"
+          service: "sre-observatory"
+          slo: "availability"
+        annotations:
+          summary: "sre-observatory availability error budget is burning at >14.4x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_availability_6h_30m"
+        expr: |
+          (slo:sre_observatory_availability:bad_ratio_rate6h > 0.006)
+          and
+          (slo:sre_observatory_availability:bad_ratio_rate30m > 0.006)
+        for: "2m"
+        labels:
+          severity: "page"
+          service: "sre-observatory"
+          slo: "availability"
+        annotations:
+          summary: "sre-observatory availability error budget is burning at >6x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_availability_1d_2h"
+        expr: |
+          (slo:sre_observatory_availability:bad_ratio_rate1d > 0.003)
+          and
+          (slo:sre_observatory_availability:bad_ratio_rate2h > 0.003)
+        for: "2m"
+        labels:
+          severity: "ticket"
+          service: "sre-observatory"
+          slo: "availability"
+        annotations:
+          summary: "sre-observatory availability error budget is burning at >3x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_availability_3d_6h"
+        expr: |
+          (slo:sre_observatory_availability:bad_ratio_rate3d > 0.001)
+          and
+          (slo:sre_observatory_availability:bad_ratio_rate6h > 0.001)
+        for: "2m"
+        labels:
+          severity: "ticket"
+          service: "sre-observatory"
+          slo: "availability"
+        annotations:
+          summary: "sre-observatory availability error budget is burning at >1x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_latency_1h_5m"
+        expr: |
+          (slo:sre_observatory_latency:bad_ratio_rate1h > 0.144)
+          and
+          (slo:sre_observatory_latency:bad_ratio_rate5m > 0.144)
+        for: "2m"
+        labels:
+          severity: "page"
+          service: "sre-observatory"
+          slo: "latency"
+        annotations:
+          summary: "sre-observatory latency error budget is burning at >14.4x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_latency_6h_30m"
+        expr: |
+          (slo:sre_observatory_latency:bad_ratio_rate6h > 0.06)
+          and
+          (slo:sre_observatory_latency:bad_ratio_rate30m > 0.06)
+        for: "2m"
+        labels:
+          severity: "page"
+          service: "sre-observatory"
+          slo: "latency"
+        annotations:
+          summary: "sre-observatory latency error budget is burning at >6x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_latency_1d_2h"
+        expr: |
+          (slo:sre_observatory_latency:bad_ratio_rate1d > 0.03)
+          and
+          (slo:sre_observatory_latency:bad_ratio_rate2h > 0.03)
+        for: "2m"
+        labels:
+          severity: "ticket"
+          service: "sre-observatory"
+          slo: "latency"
+        annotations:
+          summary: "sre-observatory latency error budget is burning at >3x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
+      - alert: "SLOBurnRate_sre_observatory_latency_3d_6h"
+        expr: |
+          (slo:sre_observatory_latency:bad_ratio_rate3d > 0.01)
+          and
+          (slo:sre_observatory_latency:bad_ratio_rate6h > 0.01)
+        for: "2m"
+        labels:
+          severity: "ticket"
+          service: "sre-observatory"
+          slo: "latency"
+        annotations:
+          summary: "sre-observatory latency error budget is burning at >1x"
+          runbook_url: "https://github.com/STEVVVU/sre-observatory/blob/main/docs/runbooks/high-error-budget-burn.md"
