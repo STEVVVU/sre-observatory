@@ -1,0 +1,83 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install --editable ".[dev]"
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy
+      - run: pytest --cov=observatory --cov=sre_tools --cov-report=term-missing
+      - run: python scripts/render_slo_rules.py --check
+      - run: python scripts/validate_configs.py
+
+  platform-config:
+    runs-on: ubuntu-24.04
+    env:
+      KUBECONFORM_VERSION: "0.6.7"
+      PROMETHEUS_VERSION: "3.2.1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: "v1.31.4"
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.10.5"
+      - name: Install config validators
+        run: |
+          python -m pip install yamllint
+          curl --fail --silent --show-error --location \
+            "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" |
+            sudo tar --extract --gzip --directory /usr/local/bin kubeconform
+          curl --fail --silent --show-error --location \
+            "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz" |
+            tar --extract --gzip
+          sudo install \
+            "prometheus-${PROMETHEUS_VERSION}.linux-amd64/promtool" \
+            /usr/local/bin/promtool
+      - run: yamllint .
+      - run: kubectl kustomize deploy/kubernetes | kubeconform -strict -summary
+      - run: kubeconform -strict -summary deploy/kubernetes/drills/load-generator-job.yaml
+      - name: Validate Prometheus configuration
+        run: |
+          sudo mkdir --parents /etc/prometheus/rules
+          sudo cp observability/prometheus/slo-rules.yaml /etc/prometheus/rules/
+          promtool check config observability/prometheus/prometheus.yml
+      - run: promtool check rules observability/prometheus/slo-rules.yaml
+      - run: terraform fmt -check -recursive infra/terraform
+      - run: terraform -chdir=infra/terraform/environments/dev init -backend=false
+      - run: terraform -chdir=infra/terraform/environments/dev validate
+      - run: shellcheck scripts/*.sh
+
+  image:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: service/Dockerfile
+          config: .hadolint.yaml
+      - run: docker build --file service/Dockerfile --tag sre-observatory:ci .
