@@ -64,6 +64,8 @@ python -m compileall -q service sre_tools scripts tools tests
 ```
 
 PowerShell uses `$env:PYTHONPATH='service'` before the unittest command.
+[`constraints.txt`](constraints.txt) pins the dependency resolution exercised by local tests and CI;
+runtime installs consume the same constraints without installing development-only packages.
 
 ## Deployment
 
@@ -135,4 +137,3 @@ response guidance is in
   attach an SBOM/signature.
 
 Licensed under Apache-2.0. See [`LICENSE`](LICENSE).
-

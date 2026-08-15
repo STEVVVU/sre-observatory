@@ -111,6 +111,7 @@ def validate_repository_contract() -> None:
     required = [
         "README.md",
         "LICENSE",
+        "constraints.txt",
         "compose.yaml",
         ".github/workflows/ci.yml",
         "docs/architecture.md",

@@ -14,7 +14,7 @@ dependencies = [
   "opentelemetry-instrumentation-fastapi>=0.50b0,<1",
   "opentelemetry-sdk>=1.29,<2",
   "prometheus-client>=0.21,<1",
-  "uvicorn[standard]>=0.34,<1",
+  "uvicorn>=0.34,<1",
 ]
 
 [project.optional-dependencies]
