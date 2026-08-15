@@ -1,8 +1,15 @@
 extends: default
+ignore: |
+  prometheus-*
 rules:
   document-start: disable
   line-length: disable
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 1
   truthy:
     allowed-values: ["true", "false"]
+    check-keys: false
   comments:
     min-spaces-from-content: 1
