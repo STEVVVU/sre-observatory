@@ -23,7 +23,7 @@ module "eks" {
       most_recent = true
     }
     vpc-cni = {
-      most_recent = true
+      most_recent    = true
       before_compute = true
     }
   }
@@ -32,11 +32,11 @@ module "eks" {
   subnet_ids               = var.private_subnet_ids
   control_plane_subnet_ids = var.private_subnet_ids
 
-  enable_irsa                              = true
-  enable_kms_key_rotation                  = true
-  create_cloudwatch_log_group              = true
-  cloudwatch_log_group_retention_in_days   = 30
-  cluster_enabled_log_types                = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  enable_irsa                            = true
+  enable_kms_key_rotation                = true
+  create_cloudwatch_log_group            = true
+  cloudwatch_log_group_retention_in_days = 30
+  cluster_enabled_log_types              = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   eks_managed_node_groups = {
     platform = {

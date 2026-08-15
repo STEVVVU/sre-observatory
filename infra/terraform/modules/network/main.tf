@@ -95,7 +95,7 @@ resource "aws_nat_gateway" "this" {
   count = local.nat_gateway_count
 
   allocation_id = aws_eip.nat[count.index].id
-  subnet_id      = aws_subnet.public[tostring(count.index)].id
+  subnet_id     = aws_subnet.public[tostring(count.index)].id
   tags = merge(var.tags, {
     Name = "${var.name}-nat-${count.index + 1}"
   })
