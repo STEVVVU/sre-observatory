@@ -1,8 +1,7 @@
-# SRE Observatory
+# Observability Platform
 
-SRE Observatory is a compact internal-platform reference repository: an instrumented service,
-reliability objectives, deployment safety controls, infrastructure modules, and an incident drill
-that can be reviewed together.
+An observability platform for a Python service with metrics, distributed tracing,
+health checks, dashboards, alerting, deployment controls, and an incident drill.
 
 This repository is an implementation and validation artifact. It does **not** claim that the AWS
 or Kubernetes resources have been deployed, nor does it claim production traffic or cloud scale.
